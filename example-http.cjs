@@ -1,4 +1,6 @@
+'use strict'
 
+// commonJS example
 
 (async() => {
     const unlode = await import('unlode')
