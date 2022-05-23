@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "unlode": "file:../unlode"
+    "unlode": "github:GeekyDeaks/unlode"
   },
   "type": "module"
 }

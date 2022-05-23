@@ -3,14 +3,14 @@ import * as unlode from 'unlode'
 import { makeHttpTest } from 'unlode/http'
 
 let phases = [
-    { startRate: 1, endRate: 10, duration: 5 },
-    { startRate: 10, endRate: 10, duration: 10 },
-    { startRate: 10, endRate: 1, duration: 5 },
+    { startRate: 1, endRate: 500, duration: 10 },
+    { startRate: 500, endRate: 500, duration: 60 },
+    { startRate: 500, endRate: 1, duration: 10 },
 ]
 
 let test = async({ metrics }) => {
-    let http = makeHttpTest(metrics.prefix('local'))
-    await http.get('http://127.0.0.1:3001/')
+    let http = makeHttpTest(metrics)
+    await http.get('http://floz:8080/')
 }
 
 function printStatus(m) {
