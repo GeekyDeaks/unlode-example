@@ -1,11 +1,12 @@
 
 import * as unlode from 'unlode'
 import { makeHttpTest } from 'unlode/http'
+import { inspect } from 'node:util'
 
 let phases = [
-    { startRate: 1, endRate: 500, duration: 10 },
-    { startRate: 500, endRate: 500, duration: 60 },
-    { startRate: 500, endRate: 1, duration: 10 },
+    { startRate: 1, endRate: 50, duration: 5, maxConcurrent: 50 },
+    { startRate: 50, endRate: 50, duration: 20, maxConcurrent: 50 },
+    { startRate: 50, endRate: 1, duration: 5, maxConcurrent: 50 },
 ]
 
 let test = async({ metrics }) => {
@@ -43,5 +44,46 @@ unlode.on('sample', (sample) => {
 })
 
 unlode.runTest({ phases, test }).then( metrics => {
-    console.log(JSON.stringify(metrics, null, 2))
+    //console.log(JSON.stringify(metrics, null, 2))
+
+
+    let counters = {}
+    let gauges = {}
+    // summarise the metrics
+
+    function addCounters(c) {
+        for( let [key, value] of Object.entries(c)) {
+            if(!counters[key]) counters[key] = 0
+            counters[key] += value
+        }
+    }
+
+    function addGauges(g) {
+        for( let [key, value] of Object.entries(g)) {
+            let g = gauges[key]
+            if(!g) {
+                gauges[key] = value
+            } else {
+                g.value = value.value
+                g.sum += value.sum
+                g.count += value.count
+                g.avg = g.sum / g.count
+                g.min = Math.min(g.min, value.min)
+                g.max = Math.max(g.max, value.max)
+            }
+        }
+    }
+
+    metrics.forEach( p => {
+        addCounters(p.counters)
+        addGauges(p.gauges)
+        p.samples.forEach(s => {
+            addCounters(s.counters)
+            addGauges(p.gauges)
+        })
+    })
+
+    console.log('-- totals --------------------')
+    console.log(inspect({ counters, gauges}, { depth: null, colors: true}))
+
 })
