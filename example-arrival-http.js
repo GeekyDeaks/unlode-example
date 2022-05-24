@@ -4,9 +4,9 @@ import { makeHttpTest } from 'unlode/http'
 import { inspect } from 'node:util'
 
 let phases = [
-    { startRate: 1, endRate: 50, duration: 5, maxConcurrent: 50 },
-    { startRate: 50, endRate: 50, duration: 20, maxConcurrent: 50 },
-    { startRate: 50, endRate: 1, duration: 5, maxConcurrent: 50 },
+    { startRate: 1, endRate: 5000, duration: 5, maxConcurrent: 500 },
+    { startRate: 5000, endRate: 5000, duration: 20, maxConcurrent: 500 },
+    { startRate: 5000, endRate: 1, duration: 5, maxConcurrent: 500 },
 ]
 
 let test = async({ metrics }) => {
@@ -46,7 +46,6 @@ unlode.on('sample', (sample) => {
 unlode.runArrivalTest({ phases, test }).then( metrics => {
     //console.log(JSON.stringify(metrics, null, 2))
 
-
     let counters = {}
     let gauges = {}
     // summarise the metrics
@@ -79,7 +78,7 @@ unlode.runArrivalTest({ phases, test }).then( metrics => {
         addGauges(p.gauges)
         p.samples.forEach(s => {
             addCounters(s.counters)
-            addGauges(p.gauges)
+            addGauges(s.gauges)
         })
     })
 

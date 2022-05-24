@@ -42,7 +42,6 @@ unlode.on('sample', (sample) => {
 unlode.runLoadTest({ phases, test }).then( metrics => {
     //console.log(JSON.stringify(metrics, null, 2))
 
-
     let counters = {}
     let gauges = {}
     // summarise the metrics
@@ -75,11 +74,11 @@ unlode.runLoadTest({ phases, test }).then( metrics => {
         addGauges(p.gauges)
         p.samples.forEach(s => {
             addCounters(s.counters)
-            addGauges(p.gauges)
+            addGauges(s.gauges)
         })
     })
 
     console.log('-- totals --------------------')
-    console.log(inspect({ counters, gauges}, { depth: null, colors: true}))
+    console.log(inspect({ counters, gauges }, { depth: null, colors: true}))
 
 })
