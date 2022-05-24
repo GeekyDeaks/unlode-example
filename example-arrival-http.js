@@ -43,7 +43,7 @@ unlode.on('sample', (sample) => {
     printStatus(sample)
 })
 
-unlode.runTest({ phases, test }).then( metrics => {
+unlode.runArrivalTest({ phases, test }).then( metrics => {
     //console.log(JSON.stringify(metrics, null, 2))
 
 
