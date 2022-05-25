@@ -25,17 +25,17 @@ const { inspect } = require('util')
     })
 
     unlode.on('phase.end', (name, metrics) => {
-        console.log('phase.end %s %s', name, inspect(metrics, { depth: null, colors: true}))
+        console.log('phase.end %s %s', name, inspect(summariseMetrics(metrics), { depth: null, colors: true}))
     })
 
     unlode.on('sample', (metrics) => {
-        console.log('sample: %s', inspect(metrics, { depth: null, colors: true}) )
+        console.log('sample: %s', inspect(summariseMetrics(metrics), { depth: null, colors: true}) )
     })
     
-    unlode.runArrivalTest({ phases, test }).then( metrics => {
-        let { counters, gauges } = summariseMetrics(metrics)
+    unlode.runTest({ phases, test }).then( metrics => {
+        let { counters, measures, rates } = summariseMetrics(metrics)
         console.log('-- totals --------------------')
-        console.log(inspect({ counters, gauges }, { depth: null, colors: true}))
+        console.log(inspect({ counters, measures, rates }, { depth: null, colors: true}))
     })
 })()
 
