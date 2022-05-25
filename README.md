@@ -7,7 +7,7 @@ example project as a base for using [unlode](https://github.com/GeekyDeaks/unlod
     git clone https://github.com/GeekyDeaks/unlode-example.git
     cd unlode-example
     npm install
-    npx examples/https-vu.js
+    npx unlode examples/https-vu.js
 
 # docker
 
